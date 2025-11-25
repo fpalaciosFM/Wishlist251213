@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una Tarjeta para Ti</title>
+    <style>
+        /* --- Estilos Generales y de Estructura 3D --- */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a2c2c; /* Un fondo oscuro elegante */
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* El contenedor que define la perspectiva 3D */
+        .card-container {
+            perspective: 1500px;
+            width: 100%;
+            max-width: 400px; /* Ancho máximo de la tarjeta en escritorio */
+            height: 550px; /* Altura de la tarjeta */
+        }
+
+        /* El objeto tarjeta en sí */
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.4, 0.2, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Estado "Abierto" - Gira la tarjeta 180 grados */
+        .card.is-open {
+            transform: rotateY(-180deg);
+        }
+
+        /* --- Caras de la tarjeta (Frente e Interior) --- */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Oculta la parte trasera cuando gira */
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Diseño de la Portada (Frente) --- */
+        .front {
+            background: linear-gradient(135deg, #b31217, #e52d27); /* Rojo Navideño */
+            color: white;
+            transform: rotateY(0deg);
+            z-index: 2;
+            border: 4px solid #d4af37; /* Borde dorado */
+            text-align: center;
+            padding: 20px;
+        }
+
+        .front h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .front p.instruction {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        /* Adorno decorativo simple en CSS para la portada */
+        .decoration {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        /* --- Diseño del Interior (Reverso) --- */
+        .back {
+            background-color: #fffaf0; /* Color crema papel */
+            color: #333;
+            transform: rotateY(180deg); /* Inicialmente está girada mirando atrás */
+            z-index: 1;
+            border: 4px solid #d4af37;
+            padding: 40px 30px;
+            text-align: left;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            overflow-y: auto; /* Por si el texto es muy largo en móviles pequeños */
+        }
+
+        /* Estilos para el texto de tu primer párrafo */
+        .message-content {
+            font-size: 1.15em;
+            line-height: 1.6;
+            color: #4a4a4a;
+        }
+
+        .message-content strong {
+            color: #b31217; /* Resaltar las negritas en rojo */
+        }
+
+        /* --- Responsividad (Ajustes para móviles) --- */
+        @media (max-width: 480px) {
+            .card-container {
+                height: 500px; /* Un poco más baja en móviles */
+            }
+            .front h1 {
+                font-size: 2em;
+            }
+            .back {
+                padding: 30px 20px; /* Menos padding interno */
+            }
+            .message-content {
+                font-size: 1em; /* Letra ligeramente más pequeña */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="card" id="christmasCard">
+            <div class="card-face front">
+                <div class="decoration">🎁</div>
+                <h1>Primer Opción</h1>
+                <p class="instruction">(Haz clic para abrir)</p>
+            </div>
+
+            <div class="card-face back">
+                <div class="message-content">
+                    <p>Me gustan las sorpresas, sin embargo, entiendo que a veces ayuda tener una pequeña guía para aliviar la incertidumbre. Si buscas algo que realmente me ilusione, tengo una debilidad especial por las cosas hechas a mano: una manualidad creada por ti, incluso si es un detalle sencillo en papel, tiene para mí un valor inmenso sin importar el precio de los materiales. Y si el tiempo no te permite crear algo manual, no te preocupes, unos chocolates siempre son una alternativa que recibiré con gusto.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript para manejar el clic
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.getElementById('christmasCard');
+
+            card.addEventListener('click', function() {
+                // Al hacer clic, añadimos o quitamos la clase 'is-open'
+                card.classList.toggle('is-open');
+            });
+        });
+    </script>
+
+</body>
+</html>
