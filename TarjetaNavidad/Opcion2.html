@@ -3,50 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una Tarjeta para Ti</title>
+    <title>Tarjeta Navideña Interactiva</title>
     <style>
-        /* --- Estilos Generales y de Estructura 3D --- */
+        /* --- Estilos Generales --- */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #1a2c2c; /* Un fondo oscuro elegante */
+            background-color: #1a2c2c;
             font-family: 'Georgia', serif;
             margin: 0;
             padding: 20px;
         }
 
-        /* El contenedor que define la perspectiva 3D */
+        /* --- Estructura 3D --- */
         .card-container {
             perspective: 1500px;
             width: 100%;
-            max-width: 400px; /* Ancho máximo de la tarjeta en escritorio */
-            height: 550px; /* Altura de la tarjeta */
+            max-width: 400px;
+            height: 550px;
+            cursor: pointer; /* Indica que es interactivo */
         }
 
-        /* El objeto tarjeta en sí */
         .card {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.4, 0.2, 0.2, 1);
-            cursor: pointer;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        /* Estado "Abierto" - Gira la tarjeta 180 grados */
-        .card.is-open {
+        /* --- LA MAGIA DEL HOVER --- */
+        /* Cuando pasas el mouse sobre el contenedor, la tarjeta gira */
+        .card-container:hover .card {
             transform: rotateY(-180deg);
         }
 
-        /* --- Caras de la tarjeta (Frente e Interior) --- */
+        /* --- Caras de la tarjeta --- */
         .card-face {
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden; /* Oculta la parte trasera cuando gira */
+            backface-visibility: hidden;
             border-radius: 10px;
             overflow: hidden;
             display: flex;
@@ -55,13 +55,13 @@
             align-items: center;
         }
 
-        /* --- Diseño de la Portada (Frente) --- */
+        /* --- Portada (Frente) --- */
         .front {
-            background: linear-gradient(135deg, #b31217, #e52d27); /* Rojo Navideño */
+            background: linear-gradient(135deg, #b31217, #e52d27);
             color: white;
             transform: rotateY(0deg);
             z-index: 2;
-            border: 4px solid #d4af37; /* Borde dorado */
+            border: 4px solid #d4af37;
             text-align: center;
             padding: 20px;
         }
@@ -79,26 +79,26 @@
             font-style: italic;
         }
         
-        /* Adorno decorativo simple en CSS para la portada */
         .decoration {
             font-size: 4em;
             margin-bottom: 20px;
         }
 
-        /* --- Diseño del Interior (Reverso) --- */
+        /* --- Interior (Reverso) --- */
         .back {
-            background-color: #fffaf0; /* Color crema papel */
+            background-color: #fffaf0;
             color: #333;
-            transform: rotateY(180deg); /* Inicialmente está girada mirando atrás */
+            transform: rotateY(180deg);
             z-index: 1;
             border: 4px solid #d4af37;
             padding: 40px 30px;
             text-align: left;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-            overflow-y: auto; /* Por si el texto es muy largo en móviles pequeños */
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
         }
 
-        /* Estilos para el texto de tu primer párrafo */
         .message-content {
             font-size: 1.15em;
             line-height: 1.6;
@@ -109,52 +109,32 @@
             color: #b31217; /* Resaltar las negritas en rojo */
         }
 
-        /* --- Responsividad (Ajustes para móviles) --- */
+        /* --- Responsividad --- */
         @media (max-width: 480px) {
-            .card-container {
-                height: 500px; /* Un poco más baja en móviles */
-            }
-            .front h1 {
-                font-size: 2em;
-            }
-            .back {
-                padding: 30px 20px; /* Menos padding interno */
-            }
-            .message-content {
-                font-size: 1em; /* Letra ligeramente más pequeña */
-            }
+            .card-container { height: 500px; }
+            .front h1 { font-size: 2em; }
+            .back { padding: 30px 20px; }
+            .message-content { font-size: 1em; }
         }
     </style>
 </head>
 <body>
 
     <div class="card-container">
-        <div class="card" id="christmasCard">
+        <div class="card">
             <div class="card-face front">
-                <div class="decoration">🎁</div>
+                <div class="decoration">🫂</div>
                 <h1>Segunda Opción</h1>
-                <p class="instruction">(Haz clic para abrir)</p>
+                <p class="instruction">(Pasa el cursor para leer)</p>
             </div>
 
             <div class="card-face back">
                 <div class="message-content">
-                    <p>El consumismo moderno nos ha hecho caer en la trampa de pensar que necesitamos comprar objetos costosos para demostrar aprecio, convirtiendo los intercambios en una obligación material más que en un acto humano. Para mí, lo más valioso no es lo que viene en la caja, sino la intención detrás de ella. <strong>Tu cariño, tu tiempo y el poder compartir tu compañía</strong> son el verdadero regalo que atesoro, mucho más allá de cualquier cosa que el dinero pueda comprar.</p>
+                    <p>El consumismo moderno nos ha hecho caer en la trampa de pensar que necesitamos comprar objetos costosos para demostrar aprecio, convirtiendo los intercambios en una obligación material más que en un acto humano. Para mí, lo más valioso no es lo que viene en la caja, sino la intención detrás de ella. <strong>Tu cariño, tu tiempo y el poder compartir tu compañía</strong> son el verdadero regalo que atesoro, mucho más allá de cualquier cosa que el dinero pueda comprar.</strong></p>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // JavaScript para manejar el clic
-        document.addEventListener('DOMContentLoaded', function() {
-            const card = document.getElementById('christmasCard');
-
-            card.addEventListener('click', function() {
-                // Al hacer clic, añadimos o quitamos la clase 'is-open'
-                card.classList.toggle('is-open');
-            });
-        });
-    </script>
 
 </body>
 </html>
