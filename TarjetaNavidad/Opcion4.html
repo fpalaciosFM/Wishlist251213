@@ -2,35 +2,45 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Deseos y Reflexiones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mis Deseos</title>
     <style>
-        /* --- 1. Configuración Base y Fondo --- */
+        /* --- 1. CONFIGURACIÓN BÁSICA --- */
+        * { box-sizing: border-box; }
+
         body {
             display: flex;
-            flex-direction: column; /* Apila las tarjetas verticalmente */
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            background-color: #1a2c2c; /* Fondo oscuro elegante */
+            background-color: #1a2c2c;
             font-family: 'Georgia', serif;
             margin: 0;
-            padding: 40px 20px; /* Espacio arriba/abajo y a los lados */
-            gap: 60px; /* Separación entre las dos tarjetas */
+            padding: 40px 0;
+            gap: 50px;
+            overflow-x: hidden;
         }
 
-        /* --- 2. El Contenedor de la Tarjeta (Escenario 3D) --- */
+        /* Ocultamos los checkboxes del truco */
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        /* --- 2. EL CONTENEDOR (Label) --- */
+        /* Usamos 'label' en lugar de 'div' para que al hacer click active el checkbox */
         .card-container {
             perspective: 1500px;
-            width: 100%;
-            max-width: 380px; /* Ancho ideal escritorio */
-            height: 500px;    /* Altura fija base */
+            width: 85vw;       /* Ancho fluido para móvil */
+            max-width: 380px;  /* Tope de ancho para PC */
+            aspect-ratio: 3/4.5; /* Mantiene la forma rectangular */
+            min-height: 450px;
+            margin: 0 auto;
             cursor: pointer;
-            
-            /* Ajuste para móviles pequeños: que no se salga del ancho */
-            box-sizing: border-box;
+            display: block; /* Necesario porque label es inline por defecto */
+            -webkit-tap-highlight-color: transparent; /* Quita el brillo azul al tocar en Android */
         }
 
-        /* --- 3. La Tarjeta (Objeto que gira) --- */
+        /* --- 3. LA TARJETA --- */
         .card {
             width: 100%;
             height: 100%;
@@ -40,26 +50,25 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
 
-        /* --- 4. Lógica de Apertura HÍBRIDA (La clave) --- */
+        /* --- 4. LÓGICA DE APERTURA (CSS PURO) --- */
         
-        /* A) En PC (si hay mouse): Gira al pasar el cursor (Hover) */
-        @media (hover: hover) {
-            .card-container:hover .card {
-                transform: rotateY(-180deg);
-            }
-        }
-
-        /* B) En Móvil/Todos: Gira si tiene la clase .flipped (vía Click/Tap) */
-        .card.flipped {
+        /* A) Si pasas el mouse (Desktop) */
+        .card-container:hover .card {
             transform: rotateY(-180deg);
         }
 
-        /* --- 5. Las Caras de la Tarjeta --- */
+        /* B) Si el checkbox asociado está marcado (Móvil/Click) */
+        /* El selector '+' busca el hermano adyacente */
+        input:checked + .card-container .card {
+            transform: rotateY(-180deg);
+        }
+
+        /* --- 5. LAS CARAS --- */
         .card-face {
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden; /* Oculta el reverso */
+            backface-visibility: hidden;
             border-radius: 12px;
             overflow: hidden;
             display: flex;
@@ -68,97 +77,65 @@
             align-items: center;
         }
 
-        /* --- Diseño PORTADA (Frente) --- */
+        /* --- PORTADA --- */
         .front {
             background: linear-gradient(135deg, #b31217, #d4000d);
             color: white;
             transform: rotateY(0deg);
             z-index: 2;
-            border: 3px solid #d4af37; /* Dorado */
+            border: 3px solid #d4af37;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
         }
 
         .front h1 {
-            font-size: 2.2em;
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
             margin: 10px 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             line-height: 1.2;
         }
 
         .front p.instruction {
-            font-size: 1em;
+            font-size: 0.9em;
             opacity: 0.8;
-            margin-top: 25px;
+            margin-top: 20px;
             font-style: italic;
-            font-weight: 300;
         }
         
         .decoration {
-            font-size: 4em;
-            margin-bottom: 15px;
+            font-size: clamp(3rem, 10vw, 4rem);
+            margin-bottom: 10px;
         }
 
-        /* --- Diseño INTERIOR (Reverso) --- */
+        /* --- INTERIOR --- */
         .back {
-            background-color: #fffaf0; /* Papel crema */
+            background-color: #fffaf0;
             color: #2c2c2c;
             transform: rotateY(180deg);
             z-index: 1;
             border: 3px solid #d4af37;
-            padding: 30px 25px; /* Espacio interior cómodo */
+            padding: 20px;
             text-align: left;
-            overflow-y: auto; /* Scroll si el texto es muy largo */
-            
-            /* Centrado del texto */
+            overflow-y: auto;
             display: flex;
             align-items: center; 
         }
 
         .message-content {
-            font-size: 1.1em;
-            line-height: 1.6;
+            font-size: clamp(14px, 4vw, 18px); 
+            line-height: 1.5;
         }
 
         .message-content strong {
             color: #b31217;
         }
 
-        /* --- 6. OPTIMIZACIÓN MÓVIL (Media Queries) --- */
+        /* Ajuste de texto instrucción móvil */
         @media (max-width: 480px) {
-            body {
-                padding: 20px 15px; /* Menos margen en pantalla pequeña */
-                gap: 40px;
-            }
-            
-            .card-container {
-                height: 450px; /* Un poco más bajas para caber bien */
-                max-width: 100%; /* Usa todo el ancho disponible */
-            }
-
-            .front h1 {
-                font-size: 1.8em; /* Títulos más pequeños para que no se corten */
-            }
-
-            .back {
-                padding: 25px 20px;
-            }
-
-            .message-content {
-                font-size: 1.05em; /* Letra legible */
-            }
-
-            /* Cambiamos el texto de instrucción solo en móvil */
+            .front p.instruction { font-size: 0; }
             .front p.instruction::after {
-                content: " (Toca para leer)";
-                font-size: 0.9em;
-            }
-            /* Ocultamos el texto original para reemplazarlo por el de "Toca" */
-            .front p.instruction {
-                font-size: 0; 
-            }
-            .front p.instruction::after {
-                font-size: 16px; /* Restauramos tamaño visible */
+                content: "(Toca para leer)";
+                font-size: 14px;
                 display: block;
             }
         }
@@ -166,7 +143,9 @@
 </head>
 <body>
 
-    <div class="card-container" onclick="toggleCard(this)">
+    <input type="checkbox" id="card1-toggle">
+    
+    <label for="card1-toggle" class="card-container">
         <div class="card">
             <div class="card-face front">
                 <div class="decoration">🎁</div>
@@ -179,16 +158,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <script>
-        // Función simple para manejar el "Tap" en móviles
-        function toggleCard(container) {
-            const card = container.querySelector('.card');
-            // 'toggle' agrega la clase si no está, y la quita si ya está
-            card.classList.toggle('flipped');
-        }
-    </script>
+    </label>
 
 </body>
 </html>
